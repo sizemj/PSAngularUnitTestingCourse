@@ -25,12 +25,31 @@ describe ('HeroesComponent', () => {
         mockHeroService.deleteHero.and.returnValue(of(true))
         component.heroes = HEROES;
 
-        component.delete(HEROES[2]);
+        component.delete(HEROES[1]);
 
         let herosAfterDelete = component.heroes.map(a => a.name).toString()
     
         expect(component.heroes.length).toBe(2)
         expect(herosAfterDelete).not.toContain('Wonderful Woman');
        }) 
+
+       it('should call deleteHero with the correct hero', () => {
+         mockHeroService.deleteHero.and.returnValue(of(true));
+         component.heroes = HEROES;
+
+         component.delete(HEROES[2]);
+
+         expect(mockHeroService.deleteHero).toHaveBeenCalledWith(HEROES[2]);
+       });
+       it('should be subscribed to the observable', () => {
+         mockHeroService.deleteHero.and.returnValue(of(true));
+         component.heroes = HEROES;
+
+         component.delete(HEROES[2]);
+
+         expect(mockHeroService).toBeDefined();
+
+         //TODO:  check that we are subscribing to the result of the deleteHero call
+       });
     })
 })
